@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="FABRICA" Class="DataClassFabricaDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=.;Initial Catalog=FABRICA;Integrated Security=True" SettingsObjectName="PROJECT_Fabrica.Properties.Settings" SettingsPropertyName="FABRICAConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Administrativo" Member="Administrativos">
+    <Type Name="Administrativo">
+      <Column Name="ID_Admin" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="usuario" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="contrasena" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="ID_TipoAdmin" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IsDeleted" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Administrativo_Trabajador" Member="Trabajadors" ThisKey="ID_Admin" OtherKey="ID_Admin" Type="Trabajador" />
+      <Association Name="TipoAdmin_Administrativo" Member="TipoAdmin" ThisKey="ID_TipoAdmin" OtherKey="ID_TipoAdmin" Type="TipoAdmin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Trabajador" Member="Trabajadors">
+    <Type Name="Trabajador">
+      <Column Name="ID_Trabajador" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="nombre" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="apellido" Type="System.String" DbType="VarChar(60) NOT NULL" CanBeNull="false" />
+      <Column Name="cedula" Type="System.String" DbType="VarChar(13) NOT NULL" CanBeNull="false" />
+      <Column Name="telefono" Type="System.String" DbType="VarChar(15)" CanBeNull="true" />
+      <Column Name="codigo" Type="System.String" DbType="VarChar(8)" IsDbGenerated="true" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="IsDeleted" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="permiso" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Rol" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ID_Departamento" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ID_Admin" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Trabajador_Historico" Member="Historicos" ThisKey="ID_Trabajador" OtherKey="ID_Trabajador" Type="Historico" />
+      <Association Name="Trabajador_Lote" Member="Lotes" ThisKey="ID_Trabajador" OtherKey="ID_Trabajador" Type="Lote" />
+      <Association Name="Trabajador_Referencia" Member="Referencias" ThisKey="ID_Trabajador" OtherKey="ID_Trabajador" Type="Referencia" />
+      <Association Name="Administrativo_Trabajador" Member="Administrativo" ThisKey="ID_Admin" OtherKey="ID_Admin" Type="Administrativo" IsForeignKey="true" />
+      <Association Name="Departamento_Trabajador" Member="Departamento" ThisKey="ID_Departamento" OtherKey="ID_Departamento" Type="Departamento" IsForeignKey="true" />
+      <Association Name="Rol_Trabajador" Member="Rol1" ThisKey="Rol" OtherKey="ID_Rol" Type="Rol" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Almacen" Member="Almacens">
+    <Type Name="Almacen">
+      <Column Name="ID_Almacen" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="nombreAlmacen" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+      <Association Name="Almacen_Area" Member="Areas" ThisKey="ID_Almacen" OtherKey="ID_Almacen" Type="Area" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Area" Member="Areas">
+    <Type Name="Area">
+      <Column Name="ID_Area" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="nombreArea" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ID_Almacen" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Area_Stock" Member="Stocks" ThisKey="ID_Area" OtherKey="ID_Area" Type="Stock" />
+      <Association Name="Almacen_Area" Member="Almacen" ThisKey="ID_Almacen" OtherKey="ID_Almacen" Type="Almacen" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Departamento" Member="Departamentos">
+    <Type Name="Departamento">
+      <Column Name="ID_Departamento" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="nombreDep" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Departamento_Trabajador" Member="Trabajadors" ThisKey="ID_Departamento" OtherKey="ID_Departamento" Type="Trabajador" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DetalleHist" Member="DetalleHists">
+    <Type Name="DetalleHist">
+      <Column Name="ID_DetalleHist" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="tabla" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="CampoCambiado" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ID_Historico" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Historico_DetalleHist" Member="Historico" ThisKey="ID_Historico" OtherKey="ID_Historico" Type="Historico" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DetalleReferencia" Member="DetalleReferencias">
+    <Type Name="DetalleReferencia">
+      <Column Name="ID_Detalle" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="cantRoyo" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="pesoRoyo" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="descripcionDis" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="fotoDesign" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="ID_Referencia" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="DetalleReferencia_Lote" Member="Lotes" ThisKey="ID_Detalle" OtherKey="ID_Detalle" Type="Lote" />
+      <Association Name="DetalleReferencia_Stock" Member="Stocks" ThisKey="ID_Detalle" OtherKey="ID_Detalle" Type="Stock" />
+      <Association Name="Referencia_DetalleReferencia" Member="Referencia" ThisKey="ID_Referencia" OtherKey="ID_Referencia" Type="Referencia" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Historico" Member="Historicos">
+    <Type Name="Historico">
+      <Column Name="ID_Historico" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="fechaCreacion" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ID_Trabajador" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Historico_DetalleHist" Member="DetalleHists" ThisKey="ID_Historico" OtherKey="ID_Historico" Type="DetalleHist" />
+      <Association Name="Trabajador_Historico" Member="Trabajador" ThisKey="ID_Trabajador" OtherKey="ID_Trabajador" Type="Trabajador" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Lote" Member="Lotes">
+    <Type Name="Lote">
+      <Column Name="ID_Lote" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="numLote" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="cantLote" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ID_Detalle" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ID_Trabajador" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="DetalleReferencia_Lote" Member="DetalleReferencia" ThisKey="ID_Detalle" OtherKey="ID_Detalle" Type="DetalleReferencia" IsForeignKey="true" />
+      <Association Name="Trabajador_Lote" Member="Trabajador" ThisKey="ID_Trabajador" OtherKey="ID_Trabajador" Type="Trabajador" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Referencia" Member="Referencias">
+    <Type Name="Referencia">
+      <Column Name="ID_Referencia" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="referencia" Member="referencia1" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="fechaAdquisicion" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ID_Trabajador" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Referencia_DetalleReferencia" Member="DetalleReferencias" ThisKey="ID_Referencia" OtherKey="ID_Referencia" Type="DetalleReferencia" />
+      <Association Name="Trabajador_Referencia" Member="Trabajador" ThisKey="ID_Trabajador" OtherKey="ID_Trabajador" Type="Trabajador" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Rol" Member="Rols">
+    <Type Name="Rol">
+      <Column Name="ID_Rol" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="nombreRol" Type="System.String" DbType="VarChar(70)" CanBeNull="true" />
+      <Association Name="Rol_Trabajador" Member="Trabajadors" ThisKey="ID_Rol" OtherKey="Rol" Type="Trabajador" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Stock" Member="Stocks">
+    <Type Name="Stock">
+      <Column Name="ID_Stock" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ID_Detalle" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="inStock" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="ID_Area" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="cantRoyo" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Area_Stock" Member="Area" ThisKey="ID_Area" OtherKey="ID_Area" Type="Area" IsForeignKey="true" />
+      <Association Name="DetalleReferencia_Stock" Member="DetalleReferencia" ThisKey="ID_Detalle" OtherKey="ID_Detalle" Type="DetalleReferencia" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TipoAdmin" Member="TipoAdmins">
+    <Type Name="TipoAdmin">
+      <Column Name="ID_TipoAdmin" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="tipo" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Association Name="TipoAdmin_Administrativo" Member="Administrativos" ThisKey="ID_TipoAdmin" OtherKey="ID_TipoAdmin" Type="Administrativo" />
+    </Type>
+  </Table>
+</Database>
